@@ -26,7 +26,20 @@ function findAll() {
   })
 }
 
+function deleteInfo(id) {
+  return new Promise((resolve, reject) => {
+    const index = students.findIndex((student) => student.id === id)
+    if (index >= 0) {
+      students.splice(index, 1)
+    }
+
+    writeDataToFile('./data/students.json', students)
+    resolve(students)
+  })
+}
+
 module.exports = {
   create,
-  findAll
+  findAll,
+  deleteInfo
 }

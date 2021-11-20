@@ -23,6 +23,16 @@ function saveInfo() {
   }
 }
 
+function deleteStudent(id) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("DELETE", "/students/" + id, true);
+  xhr.send(null);
+
+  if (document.getElementsByTagName('table')[0].style.visibility == 'visible') {
+    showStudents();
+  }
+}
+
 function showStudents() {
   var xhr = new XMLHttpRequest();
 
@@ -32,8 +42,13 @@ function showStudents() {
     if (this.status == 200) {
       var data = JSON.parse(this.responseText);
 
-      if (data.length <= 0)
+      if (data.length <= 0) {
+        if (document.getElementsByTagName('table')[0].style.visibility == 'visible') {
+          document.getElementsByTagName('table')[0].style.visibility = 'hidden';
+        }
+
         return;
+      }
 
       Array.prototype.slice.call(document.getElementsByClassName('studentInfo')).forEach(
         function(elem) {
@@ -50,14 +65,23 @@ function showStudents() {
         var id = document.createElement("td");
         var name = document.createElement("td");
         var level = document.createElement("td");
+        var action = document.createElement("td");
+        var button = document.createElement("button");
+        button.appendChild(document.createTextNode("Delete"));
 
-        id.appendChild(document.createTextNode(student.id))
-        name.appendChild(document.createTextNode(student.name))
-        level.appendChild(document.createTextNode(student.level))
+        button.addEventListener("click", function() {
+          deleteStudent(student.id);
+        });
 
-        node.appendChild(id)
-        node.appendChild(name)
-        node.appendChild(level)
+        action.appendChild(button);
+        id.appendChild(document.createTextNode(student.id));
+        name.appendChild(document.createTextNode(student.name));
+        level.appendChild(document.createTextNode(student.level));
+
+        node.appendChild(id);
+        node.appendChild(name);
+        node.appendChild(level);
+        node.appendChild(action);
 
         document.getElementById('studentTable').appendChild(node);
       });

@@ -46,7 +46,23 @@ async function getStudents(req, res) {
   }
 }
 
+// @desc  Delete a specific student info
+// @route DELETE /students
+async function deleteStudent(req, res, id) {
+  try {
+    const students = await Student.deleteInfo(id)
+
+    res.writeHead(200, {
+      'Content-Type': 'application/json'
+    })
+    res.end(JSON.stringify(students))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   createStudent,
-  getStudents
+  getStudents,
+  deleteStudent
 }

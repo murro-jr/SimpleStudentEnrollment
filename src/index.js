@@ -6,7 +6,8 @@ const {
 } = require('../controllers/fileController')
 const {
   createStudent,
-  getStudents
+  getStudents,
+  deleteStudent
 } = require('../controllers/studentController')
 
 const server = http.createServer((req, res) => {
@@ -20,6 +21,10 @@ const server = http.createServer((req, res) => {
     createStudent(req, res)
   } else if (req.url == "/students" && req.method === "GET") {
     getStudents(req, res)
+  } else if (req.url.match(/\/students\/([0-9]+)/) && req.method === "DELETE") {
+    const id = req.url.split('/')[2]
+    console.log(`Student ID: ${id}`)
+    deleteStudent(req, res, id)
   }
 })
 
