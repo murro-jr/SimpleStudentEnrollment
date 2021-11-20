@@ -26,6 +26,13 @@ function findAll() {
   })
 }
 
+function findById(id) {
+  return new Promise((resolve, reject) => {
+    const product = students.find((student) => student.id === id)
+    resolve(product)
+  })
+}
+
 function deleteInfo(id) {
   return new Promise((resolve, reject) => {
     const index = students.findIndex((student) => student.id === id)
@@ -38,8 +45,22 @@ function deleteInfo(id) {
   })
 }
 
+function update(id, studentInfo) {
+  return new Promise((resolve, reject) => {
+    const index = students.findIndex((student) => student.id === id)
+    students[index] = {
+      id,
+      ...studentInfo
+    }
+    writeDataToFile('./data/students.json', students)
+    resolve(students[index])
+  })
+}
+
 module.exports = {
   create,
   findAll,
-  deleteInfo
+  findById,
+  deleteInfo,
+  update
 }

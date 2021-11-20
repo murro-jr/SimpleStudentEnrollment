@@ -7,7 +7,8 @@ const {
 const {
   createStudent,
   getStudents,
-  deleteStudent
+  deleteStudent,
+  updateStudent
 } = require('../controllers/studentController')
 
 const server = http.createServer((req, res) => {
@@ -23,8 +24,17 @@ const server = http.createServer((req, res) => {
     getStudents(req, res)
   } else if (req.url.match(/\/students\/([0-9]+)/) && req.method === "DELETE") {
     const id = req.url.split('/')[2]
-    console.log(`Student ID: ${id}`)
     deleteStudent(req, res, id)
+  } else if (req.url.match(/\/students\/([0-9]+)/) && req.method === "PUT") {
+    const id = req.url.split('/')[2]
+    updateStudent(req, res, id)
+  } else {
+    res.writeHead(404, {
+      'Content-Type': 'application/json'
+    })
+    res.end(JSON.stringify({
+      message: 'route not found'
+    }))
   }
 })
 
